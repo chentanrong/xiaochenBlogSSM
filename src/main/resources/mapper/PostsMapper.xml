@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ylt.dao.PostsDao" >
+  <resultMap id="BaseResultMap" type="com.ylt.entity.Posts" >
+    <result column="posts_id" property="postsId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="post_title" property="postTitle" jdbcType="VARCHAR" />
+    <result column="post_content" property="postContent" jdbcType="VARCHAR" />
+    <result column="post_date" property="postDate" jdbcType="VARCHAR" />
+    <result column="post_status" property="postStatus" jdbcType="VARCHAR" />
+    <result column="post_comment_count" property="postCommentCount" jdbcType="VARCHAR" />
+    <result column="post_image" property="postImage" jdbcType="VARCHAR" />
+  </resultMap>
+
+</mapper>

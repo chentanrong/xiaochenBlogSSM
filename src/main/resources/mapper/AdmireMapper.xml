@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ylt.dao.AdmireDao">
+    <resultMap id="BaseResultMap" type="com.ylt.entity.Admire">
+        <id column="admir_id" property="admirId" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="admired_id" property="admiredId" jdbcType="VARCHAR"/>
+        <result column="admir_date" property="admirDate" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="addAdmire" parameterType="com.ylt.entity.Articles">
+        insert into t_admire values(#{admirId},#{userId},#{admiredId},#{admirDate},#{type})
+    </insert>
+
+    <select id="getAdmireNumberByAdmiredId" parameterType="java.lang.String"
+            resultType="java.lang.String">
+        SELECT count(*)
+        FROM t_admire
+        WHERE admired_id = #{admiredId} and user_id=#{userId}
+    </select>
+    <select id="getAdmireNumber" parameterType="java.lang.String"
+            resultType="java.lang.String">
+        SELECT count(*)
+        FROM t_admire
+        WHERE admired_id = #{admiredId} and user_id=#{userId} and type=#{type}
+    </select>
+
+    <select id="getAdmireNumberByAdmire" parameterType="java.lang.String"
+            resultType="java.lang.String">
+        SELECT count(*)
+        FROM t_admire
+        WHERE admired_id = #{admiredId}
+    </select>
+
+
+    <delete id="deleteAdmire" parameterType="java.lang.String">
+        DELETE FROM t_admire WHERE admired_id = #{admiredId} and user_id=#{userId}
+    </delete>
+
+
+</mapper>

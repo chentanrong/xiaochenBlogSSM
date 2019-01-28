@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ylt.dao.Imgdao">
+
+    <resultMap id="BaseResultMap" type="com.ylt.entity.Img">
+        <id column="img_id" property="imgId" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="host_id" property="hostId" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="upload_time" property="uploadTime" jdbcType="VARCHAR"/>
+        <result column="is_delete" property="isDelete" jdbcType="VARCHAR"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getImgByHost" parameterType="java.lang.String"
+            resultType="com.ylt.entity.Img">
+        SELECT *
+        FROM t_img
+        WHERE host_id = #{0}
+    </select>
+
+    <select id="getCurrentImgByHost" parameterType="java.lang.String"
+            resultType="com.ylt.entity.Img">
+        SELECT *
+        FROM t_img
+        WHERE host_id = #{0} ORDER  BY  upload_time DESC LIMIT 1
+    </select>
+
+    <insert id="addImg" parameterType="com.ylt.entity.Img">
+        INSERT INTO t_img
+        VALUES(#{imgId}, #{hostId},#{userId}, #{type}, #{uploadTime}, #{isDelete}, #{path})
+    </insert>
+    <select id="getImgByUser" parameterType="java.lang.String"
+            resultType="com.ylt.entity.Img">
+        SELECT *
+        FROM t_img
+        WHERE user_id = #{0}
+    </select>
+
+</mapper>

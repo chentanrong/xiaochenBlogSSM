@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ylt.dao.ArticlesDao">
+    <resultMap id="BaseResultMap" type="com.ylt.entity.Articles">
+        <id column="article_id" property="articleId" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="article_title" property="articleTitle" jdbcType="VARCHAR"/>
+        <result column="article_content" property="articleContent" jdbcType="VARCHAR"/>
+        <result column="article_views" property="articleViews" jdbcType="VARCHAR"/>
+        <result column="article_comment_count" property="articleCommentCount" jdbcType="VARCHAR"/>
+        <result column="article_date" property="articleDate" jdbcType="VARCHAR"/>
+        <!--<result column="article_like_count" property="articleLikeCount" jdbcType="VARCHAR"/>-->
+        <result column="article_image" property="articleImage" jdbcType="VARCHAR"/>
+        <association column="user_id" property="user" select="com.ylt.dao.UserDao.getUser"/>
+        <association column="article_id" property="articleLikeCount"
+                     select="com.ylt.dao.AdmireDao.getAdmireNumberByAdmire"/>
+        <!--<association column="article_id" property="admired" select="com.ylt.dao.AdmireDao.getAdmireNumberByAdmiredId"/>-->
+    </resultMap>
+    <insert id="addArticle" parameterType="com.ylt.entity.Articles">
+        insert into t_articles values(#{articleId},#{userId},#{articleTitle},
+        #{articleContent},#{articleViews},#{articleCommentCount},#{articleDate},#{articleLikeCount},#{articleImage})
+    </insert>
+    <select id="queryArticleById" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        SELECT *
+        FROM t_articles
+        WHERE article_id = #{0}
+    </select>
+
+    <select id="queryArticleByLikeByPage" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        SELECT *
+        FROM t_articles
+        WHERE article_title like #{index} OR article_views like #{index}
+        ORDER BY article_date DESC
+    </select>
+
+    <select id="queryArticleByUserId" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        SELECT article_id,user_id,article_title,article_views,article_like_count,article_date
+        FROM t_articles
+        WHERE user_id = #{userId}
+         ORDER BY article_date DESC
+    </select>
+    <select id="queryArticleOrderByDateByPage" parameterType="com.ylt.common.Page" resultMap="BaseResultMap">
+        SELECT article_id,user_id,article_title,article_views,article_like_count,article_date
+        FROM t_articles
+        ORDER BY article_date DESC
+    </select>
+
+    <select id="getAdmireByUserByPage" parameterType="java.lang.String"
+            resultMap="BaseResultMap">
+        SELECT article_id,a.user_id,article_title,article_views,article_like_count,article_date
+        FROM t_articles a
+        left  join t_admire b on a.article_id=b.admired_id
+        WHERE b.user_id = #{userId} and b.type=#{type}
+         ORDER BY b.admir_date DESC
+    </select>
+
+    <delete id="deleteArticle" parameterType="java.lang.String">
+        DELETE FROM t_articles WHERE article_id = #{articleId}
+    </delete>
+    <update id="updateArticle" parameterType="com.ylt.entity.Articles">
+        UPDATE t_articles
+            SET t_articles.article_title = #{articleTitle},
+                t_articles.article_content = #{articleContent},
+                t_articles.article_views = #{articleViews},
+                t_articles.article_comment_count = #{articleCommentCount},
+                t_articles.article_image = #{articleImage},
+                t_articles.article_date = #{articleDate}
+         WHERE t_articles.article_id = #{articleId};
+</update>
+
+</mapper>
